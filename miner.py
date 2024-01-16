@@ -7,14 +7,14 @@ resp = Queue(10)
 @gen.coroutine
 def response(message):
     if message is None:
-        print None
+        print(None)
     else:
         bh, b = ast.literal_eval(message)
         bh = BlockHeader.deserialize(bh)
         while not pow(bh.hash(), BOUND):
             b.nonce +=1
         yield resp.put(str((bh.serialize(), b ) ))
-        
+
 @gen.coroutine
 def OutGoingPeer():
     conn = yield tornado.websocket.websocket_connect("ws://"+sys.argv[1], on_message_callback=response)
