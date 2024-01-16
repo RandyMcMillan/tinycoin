@@ -5,9 +5,9 @@ from transaction import *
 import unittest
 sk = SigningKey.generate() # uses NIST192p
 vk = sk.get_verifying_key()
-#print VerifyingKey.from_string(vk.to_string())
+print(VerifyingKey.from_string(vk.to_string()));
 #signature = sk.sign("message")
-#print vk.verify(signature, "message")
+print(vk.verify(signature, "message"));
 #
 #tx = TX(vk.to_string(), "", 10).sign(sk)
 #tx.verifySig()
@@ -22,11 +22,11 @@ vk = sk.get_verifying_key()
 #BlockTX.deserialize(block.serialize()).hash() == block.hash())
 
 # mroot = block.hash()
-# print BlockHeader.deserialize(BlockHeader(1,block.hash(),3,4).serialize())
-# print BlockHeader(1,block.hash(),3,4).hash()
+print(BlockHeader.deserialize(BlockHeader(1,block.hash(),3,4).serialize()));
+print(BlockHeader(1,block.hash(),3,4).hash());
 
-        
-#print Chain().AddHeader(BlockHeader(1, sha("1"), GENESIS.hash(),  1)).chain
+
+print(Chain().AddHeader(BlockHeader(1, sha("1"), GENESIS.hash(),  1)).chain);
     # def mine(self, time):
     #     if self.nonce == None:
     #         self.nonce = 0
