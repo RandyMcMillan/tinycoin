@@ -41,7 +41,7 @@ class ChainNode(object):
     def __init__(self, header, transactions, utxoset):
         self.header = header
         self.transactions = transactions
-        self.utxoset = utxoset 
+        self.utxoset = utxoset
 # Add ASCII Data Structure
 class Chain(object):
     def __init__(self):
@@ -71,7 +71,7 @@ class Chain(object):
             try:
                 new_utxoset = Chain.make_new_utxo_set(parent.utxoset, block, header)
             except ValueError as e:
-                print e, "Bad Block, rejected!"
+                print(e), "Bad Block, rejected!"
             finally:
                 self.chain[header.height][header.hash()] = ChainNode(header, block, new_utxoset)
                 self.max_height = max(h.height, self.max_height)
