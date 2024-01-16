@@ -17,18 +17,22 @@ class Context(object):
         return peer in self.peers
     @gen.coroutine
     def msg(self, peer, msg):
-        print self.peers
+        print(self.peers);
         self.peers[peer].write_message(msg)
     @gen.coroutine
     def broadcast(self, msg, without=set()):
         for peer, conn in self.peers.iteritems():
-            print "LOOK", peer, without, dir(conn)
+            print("LOOK");
+            print(peer);
+            print(without);
+            print(dir(conn));
             if peer in without:
                 continue
             try:
                 yield conn.write_message(msg)
             except Exception as e:
-                print peer, e
+                print(peer);
+                print(e);
 
 #######################
 ### Peering Section####
@@ -42,13 +46,13 @@ CLOSE = 3
 """http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?&page=105 shows 7698 being unused"""
 def local_peers():
     """List of router-local peers"""
-    # a = ["ws://192.168.0.%d:%d"%(x,p) for p in [PORT_DEF, PORT]for x in xrange(2, 256) ] 
+    # a = ["ws://192.168.0.%d:%d"%(x,p) for p in [PORT_DEF, PORT]for x in xrange(2, 256) ]
 
     a = ["localhost:%d"%(8000 if sys.argv[1] == "8001" else 8001)]
     random.shuffle(a)
     return a
 
-# print local_peers()
+#print(local_peers());
 
 #######################
 ###### Incoming Peer ##
@@ -66,7 +70,7 @@ def MakeIncomingPeerHandler(ctx):
             return self.request.remote_ip
         @gen.coroutine
         def on_message(self, message):
-            print message
+            print(message);
             yield ctx.q.put((MSG,self.peer(), message))
         @gen.coroutine
         def on_close(self):
@@ -82,7 +86,7 @@ def client_on_message(ctx, peer):
         if message is None:
             yield ctx.q.put((CLOSE,peer))
         else:
-            print message
+            print(message);
             yield ctx.q.put((MSG,peer, message))
     return cls
 
@@ -93,7 +97,7 @@ NPEERS = 10
 @gen.coroutine
 def repeer(ctx):
     #while True:
-        print "A"
+        print("A");
         for peer in local_peers():
             if ctx.peer_open(peer):
                 continue
@@ -101,7 +105,7 @@ def repeer(ctx):
                 conn = yield OutGoingPeer(ctx, peer)
                 yield ctx.q.put((OPEN, peer, conn))
             except Exception as e:
-                print e
+                print(e);
             yield gen.sleep(10)
 
 @gen.coroutine
@@ -161,7 +165,7 @@ def network_state_machine(ctx):
     yield ctx.q.put((START,))
     while True:
         item = yield ctx.q.get()
-        print item
+        print(item);
         yield functions[item[0]](ctx, *item[1:])
         ctx.q.task_done()
 
